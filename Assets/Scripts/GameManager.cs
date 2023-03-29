@@ -4,11 +4,11 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public Mia player;
-    private Spawner spawner;
+    public Spawner Spawner { get; private set; }
 
     public Text scoreText;
+    public Text word;
     public GameObject playButton;
-    //public GameObject gameOver;
     public int score; //{ get; private set; }
 
     private void Awake()
@@ -16,9 +16,19 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         player = FindObjectOfType<Mia>();
-        spawner = FindObjectOfType<Spawner>();
+        Spawner = FindObjectOfType<Spawner>();
 
         Pause();
+    }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            // C# é uma piada nmlr, olha o que tem que fazer pra popar um char
+            if (word.text.Length > 0) 
+                word.text = word.text.Substring(0, word.text.Length - 1);
+        }
     }
 
     public void Play()
@@ -29,14 +39,10 @@ public class GameManager : MonoBehaviour
         playButton.SetActive(false);
         //gameOver.SetActive(false);
 
+        word.text = string.Empty;
+
         Time.timeScale = 1f;
         player.enabled = true;
-
-        Columns[] columns = FindObjectsOfType<Columns>();
-
-        for (int i = 0; i < columns.Length; i++) {
-            Destroy(columns[i].gameObject);
-        }
     }
 
     public void GameOver()
@@ -57,5 +63,10 @@ public class GameManager : MonoBehaviour
     {
         score++;
         scoreText.text = score.ToString();
+    }
+
+    public void AddLetter(string letter)
+    {
+        word.text += letter;
     }
 }

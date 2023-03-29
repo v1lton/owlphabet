@@ -2,26 +2,74 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spawner  : MonoBehaviour
+public class Spawner : MonoBehaviour
 {
-   public GameObject prefab;
-   public float spawnRate = 1f;
-   public float minHeight = -1f;
-   public float maxHeight = 1f;
+    public GameObject prefab;
+    public string[] alphabet = {
+    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+    "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
+    };
 
-   private void OnEnable()
-   {
-        InvokeRepeating(nameof(Spawn), spawnRate, spawnRate);
-   }
+    private const float MAX_HEIGHT = 5f;
+    private const float MIN_HEIGHT = -1.5f;
+    private const float LETTER_MOVE_SPEED = 10f;
+    private const float LETTER_DESTROY_X_POSITION = -13f;
+    private const float LETTER_SPAWN_X_POSITION = 13f;
 
-   private void onDisable()
-   {
-    CancelInvoke(nameof(Spawn));
-   }
+    private List<GameObject> letters;
+    private float letterSpawnTimer;
+    private float letterSpawnDelay;
 
-   private void Spawn()
-   {
-    GameObject columns = Instantiate(prefab, transform.position, Quaternion.identity);
-    columns.transform.position += Vector3.up * Random.Range(minHeight, maxHeight);
-   }
+    private void Awake()
+    {
+        letters = new();
+        letterSpawnDelay = 1f;
+    }
+
+    private void Start() { }
+
+    private void Update()
+    {
+        HandleLettersMovement();
+        HandleLettersSpawning();
+    }
+    
+    private void HandleLettersSpawning()
+    {
+        letterSpawnTimer -= Time.deltaTime;
+        if (letterSpawnTimer <= 0f)
+        {
+            letterSpawnTimer += letterSpawnDelay;
+            Spawn();
+        }
+    }
+
+    private void HandleLettersMovement()
+    {
+        for (int i = 0; i < letters.Count; i++)
+        {
+            GameObject letter = letters[i];
+            letter.transform.position += new Vector3(-1, 0, 0) * LETTER_MOVE_SPEED * Time.deltaTime;
+            if (letter.transform.position.x < LETTER_DESTROY_X_POSITION)
+            {
+                DestroyLetter(letter);
+                i--;
+            }
+        }
+    }
+
+    private void Spawn()
+    {
+        string letter = alphabet[Random.Range(0, alphabet.Length)];
+        Vector3 position = new Vector3(LETTER_SPAWN_X_POSITION, Random.Range(MIN_HEIGHT, MAX_HEIGHT), 0);
+        GameObject letterObject = Instantiate(prefab, position, Quaternion.identity);
+        letterObject.GetComponentInChildren<TextMesh>().text = letter;
+        letters.Add(letterObject);
+    }
+
+    public void DestroyLetter(GameObject letter)
+    {
+        Destroy(letter);
+        letters.Remove(letter);
+    }
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Obstacle
   - Score
+  - Letter
   layers:
   - Default
   - TransparentFX

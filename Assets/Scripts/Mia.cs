@@ -65,8 +65,10 @@ public class Mia : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Obstacle")) {
             FindObjectOfType<GameManager>().GameOver();
-        } else if (other.gameObject.CompareTag("Score")) {
-            FindObjectOfType<GameManager>().IncreaseScore();
+        } else if (other.gameObject.CompareTag("Letter"))
+        {
+            FindObjectOfType<GameManager>().Spawner.DestroyLetter(other.gameObject);
+            FindObjectOfType<GameManager>().AddLetter(other.gameObject.GetComponentInChildren<TextMesh>().text);
         }
     }
 }
