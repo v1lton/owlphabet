@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public Text word;
     public GameObject playButton;
     public int score; //{ get; private set; }
+    private WordChecker wordChecker;
 
     private void Awake()
     {
@@ -18,6 +19,9 @@ public class GameManager : MonoBehaviour
         player = FindObjectOfType<Mia>();
         Spawner = FindObjectOfType<Spawner>();
 
+        string wordsFilePath = Application.dataPath + "/Scripts/words.txt";
+        wordChecker = new WordChecker(wordsFilePath);
+
         Pause();
     }
 
@@ -25,7 +29,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            // C# é uma piada nmlr, olha o que tem que fazer pra popar um char
+            // C# ï¿½ uma piada nmlr, olha o que tem que fazer pra popar um char
             if (word.text.Length > 0) 
                 word.text = word.text.Substring(0, word.text.Length - 1);
         }
@@ -43,6 +47,9 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 1f;
         player.enabled = true;
+
+        string wordsFilePath = Application.dataPath + "/Scripts/words.txt";
+        wordChecker = new WordChecker(wordsFilePath);
     }
 
     public void GameOver()
@@ -68,5 +75,12 @@ public class GameManager : MonoBehaviour
     public void AddLetter(string letter)
     {
         word.text += letter;
+        if (word.text.Length >= 3) { 
+            if (wordChecker.IsWordInTrie(word.text)) {
+                IncreaseScore();
+            } else {
+                GameOver();
+            }
+        }
     }
 }

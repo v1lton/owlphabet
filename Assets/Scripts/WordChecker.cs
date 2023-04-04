@@ -2,46 +2,58 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-class TrieNode {
+class TrieNode
+{
     public bool is_leaf;
     public TrieNode[] children;
 
-    public TrieNode() {
+    public TrieNode()
+    {
         is_leaf = false;
         children = new TrieNode[26];
     }
 }
 
-class Trie {
+class Trie
+{
     private TrieNode root;
 
-    public Trie() {
+    public Trie()
+    {
         root = new TrieNode();
     }
 
-    public void Insert(string word) {
+    public void Insert(string word)
+    {
         TrieNode curr = root;
 
-        foreach (char c in word) {
+        foreach (char c in word)
+        {
             int index = c - 'a';
+            if (index >= 0 && index < 26)
+            {
+                if (curr.children[index] == null)
+                {
+                    curr.children[index] = new TrieNode();
+                }
 
-            if (curr.children[index] == null) {
-                curr.children[index] = new TrieNode();
+                curr = curr.children[index];
             }
-
-            curr = curr.children[index];
         }
 
         curr.is_leaf = true;
     }
 
-    public bool Search(string word) {
+    public bool Search(string word)
+    {
         TrieNode curr = root;
 
-        foreach (char c in word) {
-            int index = c - 'a';
+        foreach (char c in word)
+        {
+            int index = c - 'A';
 
-            if (curr.children[index] == null) {
+            if (curr.children[index] == null)
+            {
                 return false;
             }
 
@@ -51,42 +63,55 @@ class Trie {
         return curr.is_leaf;
     }
 
-    private void Destroy(TrieNode root) {
-        if (root == null) {
+    private void Destroy(TrieNode root)
+    {
+        if (root == null)
+        {
             return;
         }
 
-        foreach (TrieNode child in root.children) {
+        foreach (TrieNode child in root.children)
+        {
             Destroy(child);
         }
 
         root = null;
     }
 
-    public void Destroy() {
+    public void Destroy()
+    {
         Destroy(root);
     }
 }
 
-class WordChecker {
-    static void Main(string[] args) {
-        Trie trie = new Trie();
+public class WordChecker
+{
+    private Trie trie = new Trie();
 
-        StreamReader file = new StreamReader("words.txt");
+    public WordChecker(string filePath)
+    {
+        // Load words into trie when WordChecker object is created
+        using (StreamReader file = new StreamReader(filePath))
+        {
+            if (file == null)
+            {
+                Console.Error.WriteLine("Error: Unable to open file");
+                Environment.Exit(1);
+            }
 
-        if (file == null) {
-            Console.Error.WriteLine("Error: Unable to open file");
-            Environment.Exit(1);
+            string line;
+
+            while ((line = file.ReadLine()) != null)
+            {
+                trie.Insert(line);
+            }
+
+            file.Close();
         }
+    }
 
-        string line;
-
-        while ((line = file.ReadLine()) != null) {
-            trie.Insert(line);
-        }
-
-        file.Close();
-
-        trie.Destroy();
+    public bool IsWordInTrie(string word)
+    {
+        return trie.Search(word);
     }
 }
