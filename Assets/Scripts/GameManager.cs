@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,6 +12,12 @@ public class GameManager : MonoBehaviour
     public GameObject playButton;
     public int score; //{ get; private set; }
     private WordChecker wordChecker;
+    private const string POP_CHAR = "!";
+
+    // eu odeio a string do C#, plmds
+    private char[] letters;
+    private int wordLenght;
+    private int wordIndex;
 
     private void Awake()
     {
@@ -25,14 +32,24 @@ public class GameManager : MonoBehaviour
         Pause();
     }
 
-    private void Update()
+    private void PopChar()
     {
-        if (Input.GetMouseButtonDown(1))
-        {
-            // C# � uma piada nmlr, olha o que tem que fazer pra popar um char
-            if (word.text.Length > 0) 
-                word.text = word.text.Substring(0, word.text.Length - 1);
-        }
+        if (wordIndex == 0)
+            return;
+        letters[--wordIndex] = '_';
+        word.text = String.Join("", letters);
+    }
+
+    private void NextLevel()
+    {
+        // Por enquanto, só tamanhos válidos de 1 ~ 10
+        word.text = string.Empty;
+        wordIndex = 0;
+        wordLenght = UnityEngine.Random.Range(1, 11);
+        letters = new char[wordLenght];
+        for (int i = 0; i < wordLenght; i++)
+            letters[i] = '_';
+        word.text = String.Join("", letters);
     }
 
     public void Play()
@@ -50,6 +67,8 @@ public class GameManager : MonoBehaviour
 
         string wordsFilePath = Application.dataPath + "/Scripts/words.txt";
         wordChecker = new WordChecker(wordsFilePath);
+
+        NextLevel();
     }
 
     public void GameOver()
@@ -74,12 +93,22 @@ public class GameManager : MonoBehaviour
 
     public void AddLetter(string letter)
     {
-        word.text += letter;
-        if (word.text.Length >= 3) { 
+        if (letter == POP_CHAR)
+        {
+            PopChar();
+            return; 
+        }
+
+        letters[wordIndex++] = Convert.ToChar(letter);
+        word.text = String.Join("", letters);
+        if (wordIndex == wordLenght) { 
             if (wordChecker.IsWordInTrie(word.text)) {
                 IncreaseScore();
+                NextLevel();
             } else {
-                GameOver();
+                // TODO: lidar quando a palavra não existe
+                // GameOver();
+                NextLevel();
             }
         }
     }

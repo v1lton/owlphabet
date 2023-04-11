@@ -5,10 +5,10 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public GameObject prefab;
-    public string[] alphabet = {
+    private string[] alphabet = {
     "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-    "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-    };
+    "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+    "!"};
 
     private const float MAX_HEIGHT = 5f;
     private const float MIN_HEIGHT = -1.5f;
@@ -19,6 +19,8 @@ public class Spawner : MonoBehaviour
     private List<GameObject> letters;
     private float letterSpawnTimer;
     private float letterSpawnDelay;
+
+    public global::System.String[] Alphabet { get => alphabet; set => alphabet = value; }
 
     private void Awake()
     {
@@ -60,7 +62,7 @@ public class Spawner : MonoBehaviour
 
     private void Spawn()
     {
-        string letter = alphabet[Random.Range(0, alphabet.Length)];
+        string letter = Alphabet[Random.Range(0, Alphabet.Length)];
         Vector3 position = new Vector3(LETTER_SPAWN_X_POSITION, Random.Range(MIN_HEIGHT, MAX_HEIGHT), 0);
         GameObject letterObject = Instantiate(prefab, position, Quaternion.identity);
         letterObject.GetComponentInChildren<TextMesh>().text = letter;
