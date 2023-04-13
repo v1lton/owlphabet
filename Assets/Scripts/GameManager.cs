@@ -42,9 +42,16 @@ public class GameManager : MonoBehaviour
 
     private void NextLevel()
     {
-        // Por enquanto, só tamanhos válidos de 1 ~ 10
         word.text = string.Empty;
         wordIndex = 0;
+        if (score <= 4) {
+            wordLenght = UnityEngine.Random.Range(3, 5);
+        } else if (score <= 12) {
+            wordLenght = UnityEngine.Random.Range(4, 6);
+        } else {
+            wordLenght = UnityEngine.Random.Range(6, 12);
+        }
+        
         letters = new char[wordLenght];
         for (int i = 0; i < wordLenght; i++)
             letters[i] = '_';
