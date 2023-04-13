@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         if (wordIndex == 0)
             return;
         letters[--wordIndex] = '_';
-        word.text = String.Join("", letters);
+        word.text = String.Join(" ", letters);
     }
 
     private void NextLevel()
