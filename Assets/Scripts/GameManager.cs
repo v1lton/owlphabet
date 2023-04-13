@@ -88,6 +88,7 @@ public class GameManager : MonoBehaviour
         player.ResetPlayer();
         playButton.SetActive(true);
         //gameOver.SetActive(true);
+        lives = 3;
         for (int i = 0; i < heartImages.Length; i++) {
             heartImages[i].sprite = fullHeart;
         }
