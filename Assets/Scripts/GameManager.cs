@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        player.ResetPlayer();
         playButton.SetActive(true);
         //gameOver.SetActive(true);
 
