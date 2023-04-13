@@ -42,7 +42,7 @@ public class Mia : MonoBehaviour
         // Define a velocidade do movimento do personagem
         float speed = 5.0f;
         if (!isMouseButtonPressed) {
-            targetPosition.y -= 0.05f;
+            targetPosition.y -= 0.04f;
             targetPosition.x += 0.01f;
         }
         // Move o personagem em direção ao targetPosition com interpolação linear
@@ -57,7 +57,13 @@ public class Mia : MonoBehaviour
         } else {
             transform.localScale = new Vector3(1, 1, 1);
         }
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        // Implementa a rotação suavizada
+        if (isMouseButtonPressed) {
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        } else {
+            transform.rotation = Quaternion.AngleAxis(angle/3, Vector3.forward);
+        }
     }
 
     private void UpdateTargetPosition()
