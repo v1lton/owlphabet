@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Application.targetFrameRate = 60;
-
+        word.fontSize = 100;
         player = FindObjectOfType<Mia>();
         Spawner = FindObjectOfType<Spawner>();
 
@@ -45,11 +45,10 @@ public class GameManager : MonoBehaviour
         // Por enquanto, só tamanhos válidos de 1 ~ 10
         word.text = string.Empty;
         wordIndex = 0;
-        wordLenght = UnityEngine.Random.Range(1, 11);
         letters = new char[wordLenght];
         for (int i = 0; i < wordLenght; i++)
             letters[i] = '_';
-        word.text = String.Join("", letters);
+        word.text = String.Join(" ", letters);
     }
 
     public void Play()
@@ -100,9 +99,11 @@ public class GameManager : MonoBehaviour
         }
 
         letters[wordIndex++] = Convert.ToChar(letter);
-        word.text = String.Join("", letters);
+        word.text = String.Join(" ", letters);
+        String str = String.Join("", letters);
+
         if (wordIndex == wordLenght) { 
-            if (wordChecker.IsWordInTrie(word.text)) {
+            if (wordChecker.IsWordInTrie(str)) {
                 IncreaseScore();
                 NextLevel();
             } else {
