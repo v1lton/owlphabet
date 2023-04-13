@@ -14,6 +14,9 @@ public class Mia : MonoBehaviour
 
     private Vector3 direction;
 
+    private Vector3 targetPosition;
+    private bool isMouseButtonPressed;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -34,18 +37,35 @@ public class Mia : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
-            direction = Vector3.up * strength;
+        UpdateTargetPosition();
+
+        // Define a velocidade do movimento do personagem
+        float speed = 5.0f;
+        if (!isMouseButtonPressed) {
+            targetPosition.y -= 0.05f;
+            targetPosition.x += 0.01f;
         }
+        // Move o personagem em direção ao targetPosition com interpolação linear
+        transform.position = Vector3.Lerp(transform.position, targetPosition, speed * Time.deltaTime);
 
-        // Apply gravity and update the position
-        direction.y += gravity * Time.deltaTime;
-        transform.position += direction * Time.deltaTime;
+        // Atualiza a rotação do personagem para olhar em direção ao targetPosition
+        Vector3 direction = targetPosition - transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    }
 
-        // Tilt the bird based on the direction
-        Vector3 rotation = transform.eulerAngles;
-        rotation.z = direction.y * tilt;
-        transform.eulerAngles = rotation;
+    private void UpdateTargetPosition()
+    {
+        if (Input.GetMouseButton(0)) {
+            Vector3 mousePosition = Input.mousePosition;
+            mousePosition.z = -Camera.main.transform.position.z;
+            Vector3 newTargetPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            targetPosition = Vector3.Lerp(targetPosition, newTargetPosition, Time.deltaTime * 10);
+
+            isMouseButtonPressed = true;
+        } else {
+            isMouseButtonPressed = false;
+        }
     }
 
     private void AnimateSprite()
@@ -70,5 +90,14 @@ public class Mia : MonoBehaviour
             FindObjectOfType<GameManager>().Spawner.DestroyLetter(other.gameObject);
             FindObjectOfType<GameManager>().AddLetter(other.gameObject.GetComponentInChildren<TextMesh>().text);
         }
+    }
+
+    public void ResetPlayer() {
+        Vector3 position = transform.position;
+        position.y = 0f;
+        transform.position = position;
+        transform.rotation = Quaternion.identity;
+        direction = Vector3.zero;
+        targetPosition = Vector3.zero;
     }
 }
