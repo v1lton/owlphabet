@@ -364,7 +364,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b46f3aea652de47fb9fb584319309a90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprites: []
+  sprites:
+  - {fileID: 21300000, guid: a79a7c401cdf24a32a03822178e61914, type: 3}
+  - {fileID: 21300000, guid: 373c2f7ad37f64db682ea19ceaa3fd18, type: 3}
   strength: 5
   gravity: -9.8
   tilt: 5
@@ -738,33 +740,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 6130050849306710562, guid: eedf57b65f7189d4090d6c6304e99fe3, type: 3}
-  alphabet:
-  - A
-  - B
-  - C
-  - D
-  - E
-  - F
-  - G
-  - H
-  - I
-  - J
-  - K
-  - L
-  - M
-  - N
-  - O
-  - P
-  - Q
-  - R
-  - S
-  - T
-  - U
-  - V
-  - W
-  - X
-  - Y
-  - Z
 --- !u!4 &559223116
 Transform:
   m_ObjectHideFlags: 0
