@@ -51,6 +51,12 @@ public class Mia : MonoBehaviour
         // Atualiza a rotação do personagem para olhar em direção ao targetPosition
         Vector3 direction = targetPosition - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        if (direction.x < 0) {
+            transform.localScale = new Vector3(-1, 1, 1);
+            angle += 180;
+        } else {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
