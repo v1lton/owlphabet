@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Application.targetFrameRate = 60;
-
+        word.fontSize = 100;
         player = FindObjectOfType<Mia>();
         Spawner = FindObjectOfType<Spawner>();
 
@@ -42,14 +42,20 @@ public class GameManager : MonoBehaviour
 
     private void NextLevel()
     {
-        // Por enquanto, só tamanhos válidos de 1 ~ 10
         word.text = string.Empty;
         wordIndex = 0;
-        wordLenght = UnityEngine.Random.Range(1, 11);
+        if (score <= 4) {
+            wordLenght = UnityEngine.Random.Range(3, 5);
+        } else if (score <= 12) {
+            wordLenght = UnityEngine.Random.Range(4, 6);
+        } else {
+            wordLenght = UnityEngine.Random.Range(6, 12);
+        }
+        
         letters = new char[wordLenght];
         for (int i = 0; i < wordLenght; i++)
             letters[i] = '_';
-        word.text = String.Join("", letters);
+        word.text = String.Join(" ", letters);
     }
 
     public void Play()
@@ -73,6 +79,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        player.ResetPlayer();
         playButton.SetActive(true);
         //gameOver.SetActive(true);
 
@@ -100,9 +107,11 @@ public class GameManager : MonoBehaviour
         }
 
         letters[wordIndex++] = Convert.ToChar(letter);
-        word.text = String.Join("", letters);
+        word.text = String.Join(" ", letters);
+        String str = String.Join("", letters);
+
         if (wordIndex == wordLenght) { 
-            if (wordChecker.IsWordInTrie(word.text)) {
+            if (wordChecker.IsWordInTrie(str)) {
                 IncreaseScore();
                 NextLevel();
             } else {

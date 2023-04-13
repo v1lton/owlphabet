@@ -6,8 +6,8 @@ public class Spawner : MonoBehaviour
 {
     public GameObject prefab;
     private string[] alphabet = {
-    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
-    "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
+    "A", "A", "A", "B", "C", "D", "E", "E", "E", "F", "G", "H", "I", "I", "J", "L", "M",
+    "N", "O", "O", "O", "P", "Q", "R", "S", "T", "U", "U", "V", "X", "Z",
     "!"};
 
     private const float MAX_HEIGHT = 5f;
