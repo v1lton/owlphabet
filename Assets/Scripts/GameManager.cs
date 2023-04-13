@@ -11,6 +11,10 @@ public class GameManager : MonoBehaviour
     public Text word;
     public GameObject playButton;
     public int score; //{ get; private set; }
+    public Image[] heartImages;
+    public Sprite fullHeart;
+    public Sprite emptyHeart;
+
     private WordChecker wordChecker;
     private const string POP_CHAR = "!";
 
@@ -19,6 +23,8 @@ public class GameManager : MonoBehaviour
     private int wordLenght;
     private int wordIndex;
 
+    private int lives = 3;
+    
     private void Awake()
     {
         Application.targetFrameRate = 60;
@@ -82,7 +88,9 @@ public class GameManager : MonoBehaviour
         player.ResetPlayer();
         playButton.SetActive(true);
         //gameOver.SetActive(true);
-
+        for (int i = 0; i < heartImages.Length; i++) {
+            heartImages[i].sprite = fullHeart;
+        }
         Pause();
     }
 
@@ -115,9 +123,16 @@ public class GameManager : MonoBehaviour
                 IncreaseScore();
                 NextLevel();
             } else {
-                // TODO: lidar quando a palavra não existe
-                // GameOver();
-                NextLevel();
+                lives--;
+                if (lives > 0) {
+                    // atualiza a quantidade de imagens de vida na tela
+                    if (lives < heartImages.Length) {
+                        heartImages[lives].sprite = emptyHeart;
+                    }
+                    NextLevel();
+                } else {
+                    GameOver();
+                }
             }
         }
     }
