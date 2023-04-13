@@ -346,7 +346,7 @@ Transform:
   m_GameObject: {fileID: 193397618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -365,8 +365,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites:
-  - {fileID: 21300000, guid: a79a7c401cdf24a32a03822178e61914, type: 3}
-  - {fileID: 21300000, guid: 373c2f7ad37f64db682ea19ceaa3fd18, type: 3}
+  - {fileID: 21300000, guid: f6b50e188de824bf188c33da6d8ea1e4, type: 3}
+  - {fileID: 21300000, guid: 1f184c5c8179f40afa932d8064508b18, type: 3}
+  - {fileID: 21300000, guid: 381807711d82545a388643de2282b45f, type: 3}
+  - {fileID: 21300000, guid: ed9ec54cdbcc44b51a12a03d0d3592ef, type: 3}
   strength: 5
   gravity: -9.8
   tilt: 5
