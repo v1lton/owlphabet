@@ -1,14 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Spawner : MonoBehaviour
 {
     public GameObject prefab;
     private string[] alphabet = {
-    "A", "A", "A", "B", "C", "D", "E", "E", "E", "F", "G", "H", "I", "I", "J", "L", "M",
-    "N", "O", "O", "O", "P", "Q", "R", "S", "T", "U", "U", "V", "X", "Z",
+    "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M",
+    "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Z",
     "!"};
+
+    private string[] AlphabetAfterConsonant = {
+        "A", "E", "I", "O", "U", "R", "!"
+    };
 
     private const float MAX_HEIGHT = 5f;
     private const float MIN_HEIGHT = -1.5f;
@@ -62,7 +67,13 @@ public class Spawner : MonoBehaviour
 
     private void Spawn()
     {
+        GameManager manager = FindObjectOfType<GameManager>();
+        string lastLetter = manager.GetLastLetter().ToString();
         string letter = Alphabet[Random.Range(0, Alphabet.Length)];
+        int chanceIndex = Random.Range(0, 4);
+        if (!AlphabetAfterConsonant.ToList().Contains(lastLetter) && chanceIndex >= 1) {
+            letter = AlphabetAfterConsonant[Random.Range(0, AlphabetAfterConsonant.Length)];
+        }
         Vector3 position = new Vector3(LETTER_SPAWN_X_POSITION, Random.Range(MIN_HEIGHT, MAX_HEIGHT), 0);
         GameObject letterObject = Instantiate(prefab, position, Quaternion.identity);
         letterObject.GetComponentInChildren<TextMesh>().text = letter;

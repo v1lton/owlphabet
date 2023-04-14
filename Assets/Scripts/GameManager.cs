@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     private int wordIndex;
 
     private int lives = 3;
+    private Char lastLetter = 'a';
     
     private void Awake()
     {
@@ -43,11 +44,13 @@ public class GameManager : MonoBehaviour
         if (wordIndex == 0)
             return;
         letters[--wordIndex] = '_';
+        lastLetter = letters[wordIndex];
         word.text = String.Join(" ", letters);
     }
 
     private void NextLevel()
     {
+        lastLetter = 'a';
         word.text = string.Empty;
         wordIndex = 0;
         if (score <= 4) {
@@ -116,6 +119,7 @@ public class GameManager : MonoBehaviour
         }
 
         letters[wordIndex++] = Convert.ToChar(letter);
+        lastLetter = Convert.ToChar(letter);
         word.text = String.Join(" ", letters);
         String str = String.Join("", letters);
 
@@ -136,5 +140,10 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public Char GetLastLetter()
+    {
+        return lastLetter;
     }
 }
