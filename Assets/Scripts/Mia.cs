@@ -29,10 +29,7 @@ public class Mia : MonoBehaviour
 
     private void OnEnable()
     {
-        Vector3 position = transform.position;
-        position.y = 0f;
-        transform.position = position;
-        direction = Vector3.zero;
+        ResetPlayer();
     }
 
     private void Update()
@@ -106,10 +103,11 @@ public class Mia : MonoBehaviour
 
     public void ResetPlayer() {
         Vector3 position = transform.position;
-        position.y = 0f;
+        position.y = 3.5f;
+        position.x = -5f;
         transform.position = position;
         transform.rotation = Quaternion.identity;
         direction = Vector3.zero;
-        targetPosition = Vector3.zero;
+        targetPosition = transform.position;
     }
 }
