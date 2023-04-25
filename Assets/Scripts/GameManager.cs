@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     // eu odeio a string do C#, plmds
     private char[] letters;
-    private int wordLenght;
+    private int wordLength;
     private int wordIndex;
 
     private int lives = 3;
@@ -54,15 +54,15 @@ public class GameManager : MonoBehaviour
         word.text = string.Empty;
         wordIndex = 0;
         if (score <= 4) {
-            wordLenght = UnityEngine.Random.Range(3, 5);
+            wordLength = UnityEngine.Random.Range(3, 5);
         } else if (score <= 12) {
-            wordLenght = UnityEngine.Random.Range(4, 6);
+            wordLength = UnityEngine.Random.Range(4, 6);
         } else {
-            wordLenght = UnityEngine.Random.Range(6, 12);
+            wordLength = UnityEngine.Random.Range(6, 12);
         }
         
-        letters = new char[wordLenght];
-        for (int i = 0; i < wordLenght; i++)
+        letters = new char[wordLength];
+        for (int i = 0; i < wordLength; i++)
             letters[i] = '_';
         word.text = String.Join(" ", letters);
     }
@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour
         word.text = String.Join(" ", letters);
         String str = String.Join("", letters);
 
-        if (wordIndex == wordLenght) { 
+        if (wordIndex == wordLength) { 
             if (wordChecker.IsWordInTrie(str)) {
                 IncreaseScore();
                 NextLevel();
@@ -145,5 +145,16 @@ public class GameManager : MonoBehaviour
     public Char GetLastLetter()
     {
         return lastLetter;
+    }
+
+    public char[] GetPossibleLetters() {
+        
+        String str = string.Join("", Array.FindAll(letters, c => c != '_'));
+        int remainingLength = wordLength - str.Length;
+        Debug.Log(str + remainingLength);
+        char[] possibleLetters = wordChecker.PossibleLettersInTrie(str, wordLength);
+        Debug.Log(string.Join(", ", possibleLetters));
+        Debug.Log(string.Join(", ", wordChecker.PossibleWordsInTrie(str, wordLength)));
+        return possibleLetters;
     }
 }

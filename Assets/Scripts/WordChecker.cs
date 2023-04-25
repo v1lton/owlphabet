@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Linq;
 class TrieNode
 {
     public bool is_leaf;
@@ -82,6 +82,64 @@ class Trie
     {
         Destroy(root);
     }
+
+    public char[] GetNextLetters(string prefix, int wordLength)
+    {
+        string[] words = GetWordsStartingWith(prefix, wordLength);
+        char[] letters = Array.ConvertAll(words, word => word[prefix.Length]);
+        return letters.Distinct().ToArray();
+    }
+
+    public string[] GetWordsStartingWith(string prefix, int wordLength)
+    {
+        List<string> words = new List<string>();
+        TrieNode curr = root;
+
+        // Encontra o nó correspondente ao prefixo
+        foreach (char c in prefix)
+        {
+            int index = c - 'a';
+            if (index >= 0 && index < 26)
+            {
+                if (curr.children[index] == null)
+                {
+                    // Se o nó correspondente ao prefixo não existir, retorna um array vazio
+                    return new string[0];
+                }
+
+                curr = curr.children[index];
+            }
+        }
+        
+        int remainingLength = wordLength - prefix.Length;
+        // Obtém as palavras que começam com o prefixo e possuem o comprimento especificado
+        GetWordsStartingWithRecursive(curr, prefix, remainingLength, words);
+
+        return words.ToArray();
+    }
+
+    private void GetWordsStartingWithRecursive(TrieNode node, string prefix, int remainingLength, List<string> words)
+    {
+        if (remainingLength == 0)
+        {
+            if (node.is_leaf)
+            {
+                words.Add(prefix);
+            }
+            return;
+        }
+
+        // Verifica os filhos do nó atual para obter as próximas letras
+        for (int i = 0; i < 26; i++)
+        {
+            if (node.children[i] != null)
+            {
+                char c = (char)('a' + i);
+                GetWordsStartingWithRecursive(node.children[i], prefix + c, remainingLength - 1, words);
+            }
+        }
+    }
+
 }
 
 public class WordChecker
@@ -113,5 +171,15 @@ public class WordChecker
     public bool IsWordInTrie(string word)
     {
         return trie.Search(word);
+    }
+
+    public Char[] PossibleLettersInTrie(string prefix, int length)
+    {
+        return trie.GetNextLetters(prefix.ToLower(), length);
+    }
+
+    public string[] PossibleWordsInTrie(string prefix, int length)
+    {
+        return trie.GetWordsStartingWith(prefix.ToLower(), length);
     }
 }
