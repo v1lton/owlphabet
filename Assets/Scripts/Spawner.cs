@@ -6,57 +6,58 @@ using System;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject prefab;
+    public GameObject bubblePrefab;
     private string[] alphabet = {
     "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M",
     "N", "O", "P", "Q", "R", "S", "T", "U", "V", "X", "Z",
-    "!"};
+    "!"
+    };
 
-    private const float MAX_HEIGHT = 5f;
+    private const float MAX_HEIGHT = 4.3f;
     private const float MIN_HEIGHT = -1.5f;
-    private const float LETTER_MOVE_SPEED = 10f;
-    private const float LETTER_DESTROY_X_POSITION = -13f;
-    private const float LETTER_SPAWN_X_POSITION = 13f;
+    private const float BUBBLE_MOVE_SPEED = 10f;
+    private const float BUBBLE_DESTROY_X_POSITION = -13f;
+    private const float BUBBLE_SPAWN_X_POSITION = 13f;
 
-    private List<GameObject> letters;
-    private float letterSpawnTimer;
-    private float letterSpawnDelay;
+    private List<GameObject> bubbles;
+    private float bubbleSpawnTimer;
+    private float bubbleSpawnDelay;
 
     public global::System.String[] Alphabet { get => alphabet; set => alphabet = value; }
 
     private void Awake()
     {
-        letters = new();
-        letterSpawnDelay = 1f;
+        bubbles = new();
+        bubbleSpawnDelay = 1f;
     }
 
     private void Start() { }
 
     private void Update()
     {
-        HandleLettersMovement();
-        HandleLettersSpawning();
+        HandleBubblesMovement();
+        HandleBubblesSpawning();
     }
     
-    private void HandleLettersSpawning()
+    private void HandleBubblesSpawning()
     {
-        letterSpawnTimer -= Time.deltaTime;
-        if (letterSpawnTimer <= 0f)
+        bubbleSpawnTimer -= Time.deltaTime;
+        if (bubbleSpawnTimer <= 0f)
         {
-            letterSpawnTimer += letterSpawnDelay;
+            bubbleSpawnTimer += bubbleSpawnDelay;
             Spawn();
         }
     }
 
-    private void HandleLettersMovement()
+    private void HandleBubblesMovement()
     {
-        for (int i = 0; i < letters.Count; i++)
+        for (int i = 0; i < bubbles.Count; i++)
         {
-            GameObject letter = letters[i];
-            letter.transform.position += new Vector3(-1, 0, 0) * LETTER_MOVE_SPEED * Time.deltaTime;
-            if (letter.transform.position.x < LETTER_DESTROY_X_POSITION)
+            GameObject bubble = bubbles[i];
+            bubble.transform.position += new Vector3(-1, 0, 0) * BUBBLE_MOVE_SPEED * Time.deltaTime;
+            if (bubble.transform.position.x < BUBBLE_DESTROY_X_POSITION)
             {
-                DestroyLetter(letter);
+                DestroyBubble(bubble);
                 i--;
             }
         }
@@ -95,17 +96,24 @@ public class Spawner : MonoBehaviour
         
         string letter = possibleLetters[UnityEngine.Random.Range(0, possibleLetters.Length)];
 
-        
-
-        Vector3 position = new Vector3(LETTER_SPAWN_X_POSITION, UnityEngine.Random.Range(MIN_HEIGHT, MAX_HEIGHT), 0);
-        GameObject letterObject = Instantiate(prefab, position, Quaternion.identity);
+        // Spawn a bubble with the letter inside it
+        Vector3 position = new Vector3(BUBBLE_SPAWN_X_POSITION, UnityEngine.Random.Range(MIN_HEIGHT, MAX_HEIGHT), 0);
+        GameObject bubbleObject = Instantiate(bubblePrefab, position, Quaternion.identity);
+        GameObject letterObject = bubbleObject.transform.Find("Letter").gameObject;
         letterObject.GetComponentInChildren<TextMesh>().text = letter;
-        letters.Add(letterObject);
+        bubbles.Add(bubbleObject);
+
+        Debug.Log(bubbleObject);
     }
 
-    public void DestroyLetter(GameObject letter)
+    public void DestroyBubble(GameObject bubble)
     {
-        Destroy(letter);
-        letters.Remove(letter);
+        // Destroy the letter immediatly
+        GameObject letterObject = bubble.transform.Find("Letter").gameObject;
+        Destroy(letterObject);
+
+        // Destroy the bubble after delay for animating
+        Destroy(bubble, 0.3f);
+        bubbles.Remove(bubble);
     }
 }
