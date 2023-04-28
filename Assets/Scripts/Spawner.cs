@@ -13,7 +13,7 @@ public class Spawner : MonoBehaviour
     "!"
     };
 
-    private const float MAX_HEIGHT = 5f;
+    private const float MAX_HEIGHT = 4.3f;
     private const float MIN_HEIGHT = -1.5f;
     private const float BUBBLE_MOVE_SPEED = 10f;
     private const float BUBBLE_DESTROY_X_POSITION = -13f;
@@ -113,7 +113,7 @@ public class Spawner : MonoBehaviour
         Destroy(letterObject);
 
         // Destroy the bubble after delay for animating
-        Destroy(bubble, 0.5f);
+        Destroy(bubble, 0.3f);
         bubbles.Remove(bubble);
     }
 }
