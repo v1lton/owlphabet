@@ -94,7 +94,7 @@ public class Mia : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Obstacle")) {
             FindObjectOfType<GameManager>().GameOver();
-        } else if (other.gameObject.CompareTag("Letter"))
+        } else if (other.gameObject.CompareTag("Bubble"))
         {
             FindObjectOfType<GameManager>().Spawner.DestroyBubble(other.gameObject);
             FindObjectOfType<GameManager>().AddLetter(other.gameObject.GetComponentInChildren<TextMesh>().text);
