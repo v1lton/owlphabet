@@ -6,6 +6,7 @@ using System;
 
 public class Spawner : MonoBehaviour
 {
+    public GameObject bubblePrefab;
     public GameObject prefab;
     private string[] alphabet = {
     "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M",
@@ -56,7 +57,7 @@ public class Spawner : MonoBehaviour
             letter.transform.position += new Vector3(-1, 0, 0) * LETTER_MOVE_SPEED * Time.deltaTime;
             if (letter.transform.position.x < LETTER_DESTROY_X_POSITION)
             {
-                DestroyLetter(letter);
+                DestroyBubble(letter);
                 i--;
             }
         }
@@ -93,19 +94,21 @@ public class Spawner : MonoBehaviour
             }
         }
         
-        string letter = possibleLetters[UnityEngine.Random.Range(0, possibleLetters.Length)];
+         string letter = possibleLetters[UnityEngine.Random.Range(0, possibleLetters.Length)];
 
-        
-
+        // Spawn a bubble with the letter inside it
         Vector3 position = new Vector3(LETTER_SPAWN_X_POSITION, UnityEngine.Random.Range(MIN_HEIGHT, MAX_HEIGHT), 0);
-        GameObject letterObject = Instantiate(prefab, position, Quaternion.identity);
+        GameObject bubble = Instantiate(bubblePrefab, position, Quaternion.identity);
+        GameObject letterObject = bubble.transform.Find("Letter").gameObject;
         letterObject.GetComponentInChildren<TextMesh>().text = letter;
-        letters.Add(letterObject);
+        letters.Add(bubble);
+
+        Debug.Log(bubble);
     }
 
-    public void DestroyLetter(GameObject letter)
+    public void DestroyBubble(GameObject bubble)
     {
-        Destroy(letter);
-        letters.Remove(letter);
+        Destroy(bubble);
+        letters.Remove(bubble);
     }
 }

@@ -894,7 +894,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6748df28ab9ad40b7a0714b6f92d4704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 6130050849306710562, guid: eedf57b65f7189d4090d6c6304e99fe3, type: 3}
+  bubblePrefab: {fileID: 8082947146487159226, guid: 47cd0c2bad5754e7e9d81138a3dfef69, type: 3}
+  prefab: {fileID: 8082947146487159226, guid: 47cd0c2bad5754e7e9d81138a3dfef69, type: 3}
 --- !u!4 &559223116
 Transform:
   m_ObjectHideFlags: 0
