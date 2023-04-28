@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
     public Text scoreText;
     public Text word;
-    public GameObject playButton;
+    public GameObject StartMenu;
     public int score; //{ get; private set; }
     public Image[] heartImages;
     public Sprite fullHeart;
@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
         score = 0;
         scoreText.text = score.ToString();
 
-        playButton.SetActive(false);
+        StartMenu.SetActive(false);
         //gameOver.SetActive(false);
 
         word.text = string.Empty;
@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         player.ResetPlayer();
-        playButton.SetActive(true);
+        StartMenu.SetActive(true);
         //gameOver.SetActive(true);
         lives = 3;
         for (int i = 0; i < heartImages.Length; i++) {
@@ -145,6 +145,11 @@ public class GameManager : MonoBehaviour
     public Char GetLastLetter()
     {
         return lastLetter;
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 
     public char[] GetPossibleLetters() {
