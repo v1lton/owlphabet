@@ -108,7 +108,12 @@ public class Spawner : MonoBehaviour
 
     public void DestroyBubble(GameObject bubble)
     {
-        Destroy(bubble);
+        // Destroy the letter immediatly
+        GameObject letterObject = bubble.transform.Find("Letter").gameObject;
+        Destroy(letterObject);
+
+        // Destroy the bubble after delay for animating
+        Destroy(bubble, 0.5f);
         bubbles.Remove(bubble);
     }
 }
