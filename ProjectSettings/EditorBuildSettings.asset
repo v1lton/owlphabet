@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/FatMia.unity
+    path: Assets/Scenes/StartScreen.unity
+    guid: 73a7100dcaa4a6c4889925b3a8e0354f
+  - enabled: 1
+    path: Assets/Scenes/Owlphabet.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}
