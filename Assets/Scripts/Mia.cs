@@ -16,6 +16,8 @@ public class Mia : MonoBehaviour
 
     private Vector3 targetPosition;
     private bool isMouseButtonPressed;
+    [SerializeField] private AudioSource popSoundEffect;
+    [SerializeField] private AudioSource hitGroundSoundEffect;
 
     private void Awake()
     {
@@ -93,11 +95,13 @@ public class Mia : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Obstacle")) {
+            hitGroundSoundEffect.Play();
             FindObjectOfType<GameManager>().GameOver();
         } else if (other.gameObject.CompareTag("Bubble"))
         {
             // Start pop animation
             Bubble bubble = other.gameObject.GetComponent<Bubble>();
+            popSoundEffect.Play();
             bubble.Pop();
 
             FindObjectOfType<GameManager>().Spawner.DestroyBubble(other.gameObject);

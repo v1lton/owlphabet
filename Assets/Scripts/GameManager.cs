@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour
     public Image[] heartImages;
     public Sprite fullHeart;
     public Sprite emptyHeart;
+    [SerializeField] private AudioSource completeWordSoundEffect;
+    [SerializeField] private AudioSource failSoundEffect;
+    [SerializeField] private AudioSource lostLetterSoundEffect;
+
 
     private WordChecker wordChecker;
     private const string POP_CHAR = "!";
@@ -110,6 +114,7 @@ public class GameManager : MonoBehaviour
     {
         if (letter == POP_CHAR)
         {
+            lostLetterSoundEffect.Play();
             PopChar();
             return; 
         }
@@ -121,10 +126,12 @@ public class GameManager : MonoBehaviour
 
         if (wordIndex == wordLength) { 
             if (wordChecker.IsWordInTrie(str)) {
+                completeWordSoundEffect.Play();
                 IncreaseScore();
                 NextLevel();
             } else {
                 lives--;
+                failSoundEffect.Play();
                 if (lives > 0) {
                     // atualiza a quantidade de imagens de vida na tela
                     if (lives < heartImages.Length) {
