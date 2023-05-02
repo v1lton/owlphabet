@@ -16,6 +16,7 @@ public class Mia : MonoBehaviour
 
     private Vector3 targetPosition;
     private bool isMouseButtonPressed;
+    [SerializeField] private AudioSource popSoundEffect;
 
     private void Awake()
     {
@@ -99,6 +100,7 @@ public class Mia : MonoBehaviour
             // Start pop animation
             Bubble bubble = other.gameObject.GetComponent<Bubble>();
             bubble.Pop();
+            popSoundEffect.Play();
 
             FindObjectOfType<GameManager>().Spawner.DestroyBubble(other.gameObject);
             FindObjectOfType<GameManager>().AddLetter(other.gameObject.GetComponentInChildren<TextMesh>().text);
