@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 
@@ -9,7 +10,6 @@ public class GameManager : MonoBehaviour
 
     public Text scoreText;
     public Text word;
-    public GameObject StartMenu;
     public int score; //{ get; private set; }
     public Image[] heartImages;
     public Sprite fullHeart;
@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
     private WordChecker wordChecker;
     private const string POP_CHAR = "!";
 
-    // eu odeio a string do C#, plmds
     private char[] letters;
     private int wordLength;
     private int wordIndex;
@@ -40,7 +39,7 @@ public class GameManager : MonoBehaviour
         string wordsFilePath = Application.dataPath + "/Scripts/words.txt";
         wordChecker = new WordChecker(wordsFilePath);
 
-        Pause();
+        Play();
     }
 
     private void PopChar()
@@ -76,9 +75,6 @@ public class GameManager : MonoBehaviour
         score = 0;
         scoreText.text = score.ToString();
 
-        StartMenu.SetActive(false);
-        //gameOver.SetActive(false);
-
         word.text = string.Empty;
 
         Time.timeScale = 1f;
@@ -93,19 +89,19 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         player.ResetPlayer();
-        StartMenu.SetActive(true);
-        //gameOver.SetActive(true);
+
         lives = 3;
         for (int i = 0; i < heartImages.Length; i++) {
             heartImages[i].sprite = fullHeart;
         }
-        Pause();
+        Quit();
     }
 
-    public void Pause()
+    public void Quit()
     {
         Time.timeScale = 0f;
         player.enabled = false;
+        SceneManager.LoadScene("Start", LoadSceneMode.Single);
     }
 
     public void IncreaseScore()
@@ -154,10 +150,7 @@ public class GameManager : MonoBehaviour
         return lastLetter;
     }
 
-    public void Quit()
-    {
-        Application.Quit();
-    }
+
 
     public char[] GetPossibleLetters() {
         
