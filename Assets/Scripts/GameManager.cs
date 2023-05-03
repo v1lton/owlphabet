@@ -156,11 +156,7 @@ public class GameManager : MonoBehaviour
     public char[] GetPossibleLetters() {
         
         String str = string.Join("", Array.FindAll(letters, c => c != '_'));
-        int remainingLength = wordLength - str.Length;
-        Debug.Log(str + remainingLength);
         char[] possibleLetters = wordChecker.PossibleLettersInTrie(str, wordLength);
-        Debug.Log(string.Join(", ", possibleLetters));
-        Debug.Log(string.Join(", ", wordChecker.PossibleWordsInTrie(str, wordLength)));
         return possibleLetters;
     }
 }

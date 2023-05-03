@@ -85,6 +85,14 @@ class Trie
 
     public char[] GetNextLetters(string prefix, int wordLength)
     {
+        if (wordLength - prefix.Length == 0)
+        {
+            return new char[0];
+        }
+        else if (prefix.Length == 0) {
+            char[] alphabet = Enumerable.Range('A', 26).Select(c => (char) c).ToArray();
+            return alphabet;
+        }
         string[] words = GetWordsStartingWith(prefix, wordLength);
         char[] letters = Array.ConvertAll(words, word => word[prefix.Length]);
         return letters.Distinct().ToArray();
