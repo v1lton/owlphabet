@@ -17,6 +17,11 @@ public class GameOverManager : MonoBehaviour
     
     public void PlayAgain()
     {
+        SceneManager.LoadScene("Owlphabet", LoadSceneMode.Single);
+    }
+
+    public void GoToMenu()
+    {
         SceneManager.LoadScene("Start", LoadSceneMode.Single);
     }
 }
