@@ -100,10 +100,17 @@ public class Spawner : MonoBehaviour
         Vector3 position = new Vector3(BUBBLE_SPAWN_X_POSITION, UnityEngine.Random.Range(MIN_HEIGHT, MAX_HEIGHT), 0);
         GameObject bubbleObject = Instantiate(bubblePrefab, position, Quaternion.identity);
         GameObject letterObject = bubbleObject.transform.Find("Letter").gameObject;
-        letterObject.GetComponentInChildren<TextMesh>().text = letter;
-        bubbles.Add(bubbleObject);
+        TextMesh textMesh = letterObject.GetComponentInChildren<TextMesh>();
+        textMesh.text = letter;
 
-        Debug.Log(bubbleObject);
+        // Change the color of the "!" to red
+        if (letter == "!")
+        {
+        Color darkRed = new Color(0.6f, 0f, 0f);
+        textMesh.color = darkRed;
+    }
+
+        bubbles.Add(bubbleObject);
     }
 
     public void DestroyBubble(GameObject bubble)
