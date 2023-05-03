@@ -101,7 +101,8 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 0f;
         player.enabled = false;
-        SceneManager.LoadScene("Start", LoadSceneMode.Single);
+        PlayerPrefs.SetString("ScoreText", scoreText.text);
+        SceneManager.LoadScene("GameOver", LoadSceneMode.Single);
     }
 
     public void IncreaseScore()
